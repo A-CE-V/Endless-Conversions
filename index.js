@@ -1,7 +1,7 @@
 require("dotenv").config();
 import express from "express";
 import multer, { diskStorage } from "multer";
-import { post } from "axios";
+import axios from "axios";
 import { existsSync, mkdirSync, readFileSync, unlinkSync } from "fs";
 import { join, extname } from "path";
 
@@ -31,7 +31,7 @@ app.post("/convert", upload.single("file"), async (req, res) => {
 
   try {
     const apiUrl = `https://api.cloudmersive.com/convert/${inputFormat}/to/${outputFormat}`;
-    const response = await post(apiUrl, readFileSync(req.file.path), {
+    const response = await axios.post(apiUrl, readFileSync(req.file.path), {
       headers: {
         "Content-Type": "application/octet-stream",
         "Apikey": CLOUDMERSIVE_API_KEY,
